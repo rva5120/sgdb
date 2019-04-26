@@ -1,40 +1,51 @@
 #################################################
-# S-GDB : Student GDB				#
-# 						#
-# Colorful interface for students learning	#
+# S-GDB : Student GDB														#
+# -------------------														#
+# Colorful interface for students learning			#
 # about reverse engineering for the first time.	#
-#						#
-# Author : @rva5120				#
+#																								#
+# Author : @rva5120															#
 #################################################
 
 #####################
-# Supported Commands:
-#	show loops <function name> : colors loops and nested loops on a function
-#	show recursion <function name> : colors recursive calls on a function
-#	
+# Supported Commands
+# ------------------
+#  show loops <function name> : colors loops and nested loops on a function
+#  show recursion <function name> : colors recursive calls on a function
+#
+#  info <instruction> : shows information about the x86 <instruction>
+#
+#  memory : this command is a wrapper around the original examine x/
+#     memory < no arguments > - prompts you for details to help you
+#																examine memory at a given address
+#     memory addr=<address> num_bytes=<number_of_bytes> format=<b,o,d,x,s> grouped_by=<1,2,4,8>
+#     memory <address> <number_of_bytes> <format> <group>
+#
+#  tutorial : starts a tutorial to help you learn about GDB
 #####################
 
 #########################################################################
-# How do I run this script?						#
-#  GDB runs a python interpreter and has its own module available to	#
-#  import (gdb). To use this script, you can use one of two methods:	#
-#	(1) Add the line "source sgdb.py" to your .gdbinit		#
-#	(2) Directly run "source sgdb.py" on gdb			#
-#									#
-# Can I import other modules (like nltk, for example)?			#
-#  Yes, just install the module like you normally would (using pip)	#
-#									#
-# How can I add new commands?						#
-#  GDB expects commands to be wrapped in a gdb.Command subclass. So	#
-#  you need to create a new class and define two methods:		#
-#	(1) __init__ : defines the command and argument types		#
-#	(2) invoke : defines the behavior of the command		#
-#									#
-# Useful resources:							#
-# 	Reversing: Secrets of Reverse Engineering (Wiley)		#
-#	GDB Python API: https://sourceware.org/gdb/onlinedocs/gdb/	#
-#				Python-API.html#Python-API		#
-#	Tutorial: http://tromey.com/blog/?p=501				#
+# How do I run this script?																							#
+# -------------------------																							#
+#  GDB runs a python interpreter and has its own module available to		#
+#  import (gdb). To use this script, you can use one of two methods:		#
+#	(1) Add the line "source sgdb.py" to your .gdbinit										#
+#	(2) Directly run "source sgdb.py" on gdb															#
+#																																				#
+# Can I import other modules (like nltk, for example)?									#
+#  Yes, just install the module like you normally would (using pip)			#
+#																																				#
+# How can I add new commands?																						#
+#  GDB expects commands to be wrapped in a gdb.Command subclass. So			#
+#  you need to create a new class and define two methods:								#
+#	(1) __init__ : defines the command and argument types									#
+#	(2) invoke : defines the behavior of the command											#
+#																																				#
+# Useful resources:																											#
+# 	Reversing: Secrets of Reverse Engineering (Wiley)										#
+#	GDB Python API: https://sourceware.org/gdb/onlinedocs/gdb/						#
+#				Python-API.html#Python-API																			#
+#	Tutorial: http://tromey.com/blog/?p=501																#
 #########################################################################
 
 
@@ -48,11 +59,7 @@ import re
 
 # Example command
 class SaveBreakpointsCommand(gdb.Command):
-	"""Save the current breakpoints to a file.
-	This command takes a single argumen, a file
-	name.
-	The breakpoint can be restored using the
-	'source' command."""
+	"""Description of the command"""
 
 	# The Command initializer (gdb.Command) sets up the "save breakpoints" command
 	# to be processed.
@@ -62,7 +69,7 @@ class SaveBreakpointsCommand(gdb.Command):
 	# __init__(name, command_class [, completer_class [,prefix]])
 	# 	 name: 
 	def __init__(self):
-		super (SaveBreakpointsCommand, self).__init__("save breakpoints", 
+		super (SaveBreakpointsCommand, self).__init__("command name", 
 							gdb.COMMAND_SUPPORT, 
 							gdb.COMPLETE_FILENAME)
 
@@ -72,25 +79,11 @@ class SaveBreakpointsCommand(gdb.Command):
 	# task: loop over all breakpoints, and write a representation of each one to f
 	#       
 	def invoke(self, arg, from_tty):
-		with open(arg, 'w') as f:
-			for bp in gdb.get_breakpoints():
-				print >> f, "break", bp.get_location(),
-				if bp.get_thread() is not None:
-					print >> f, " thread", bp.get_thread(),
-				if bp.get_condition() is not None:
-					print >> f, " if", bp.get_condition(),
-				print >> f
-				if not bp.is_enabled():
-					print >> f, "disable $bpnum"
-				# Note: we do not save the ignore count; no point.
-				commands = bp.get_commands()
-				if commads is not None:
-					print >> f, "commands"
-					# COMMANDS has a trailing newline
-					print >> f, commands,
-					print >> f, "end"
-				print >> f
+		pass
 
+
+
+# Colors	
 class colors():
 	red = "\033[31m"
 	green = "\033[32m"
@@ -103,11 +96,22 @@ class colors():
 	nc = "\033[0m"
 	color_list = [red, green, yellow, blue, pink, cyan]
 
+# Check that input is a number
+def is_num(i):
+	try:
+		int(i)
+		return True
+	except ValueError:
+		return False
+
+
 
 # Loops
 class LoopsCommand(gdb.Command):
 	""" Prints the current disassembled function
-	and highligts the loops, if any."""
+	and highligts the loops, if any.
+	
+	Usage: show loops <function_name>"""
 
 	# Describe the command to be processed: show loops in function_name
 	# Argument: function name
@@ -196,7 +200,9 @@ class LoopsCommand(gdb.Command):
 
 # Recursion
 class RecursionCommand(gdb.Command):
-	""" Highlights recursive calls, if any. """
+	""" Highlights recursive calls, if any. 
+
+			Usage: show recursion <function_name>"""
 
 	def __init__(self):
 		super(RecursionCommand, self).__init__("show recursion",
@@ -258,5 +264,107 @@ class RecursionCommand(gdb.Command):
 
 
 
+# Code
+class CodeCommand(gdb.Command):
+	""" GDB list function wrapper command. 
+
+			Usage: show code <function_name>"""
+
+	def __init__(self):
+		super (CodeCommand, self).__init__("show code",
+							gdb.COMMAND_SUPPORT,
+							gdb.COMPLETE_SYMBOL)
+
+	def invoke(self, arg, from_tty):
+		print colors.bold
+		command = "list %s" % arg
+		gdb.execute(command)
+		print colors.nc
+
+
+
+# Memory
+class MemoryCommand(gdb.Command):
+	""" GDB examine memory wrapper command. 
+
+			Usage: memory"""
+
+	def __init__(self):
+		super (MemoryCommand, self).__init__("memory", 
+							gdb.COMMAND_SUPPORT)
+
+	def invoke(self, arg, from_tty):
+		# Beginners
+		if len(arg) == 0:
+			# Get the address
+			print colors.bold
+			address = raw_input("* What is the starting address? ")
+			print colors.nc
+			# Get the format
+			print colors.bold
+			print "Available Formats (to display binary, for example, enter b):"
+			print colors.nc
+			print "  t : binary - 0110 0001"
+			print "  o : octal  - 75"
+			print "  d : signed decimal - 97"
+			print "  u : unsigned decimal - 97"
+			print "  x : hexadecimal - 0x61"
+			print "  s : string - a"
+			print colors.bold
+			print_format = raw_input("* What format do you want? ")
+			print colors.nc
+			#if ((print_format != 't') && (print_format != 'o') && (print_format != 'd') && (print_format != 'u') && (print_format != 'x') && (print_format != 's')):
+			#	print "Invalid format %s" % print_format
+			#	return
+
+			# String/Bytes
+			if (print_format == 's'):
+				# Execute the examine GDB command
+				command = "x/s " + address
+				print "Executing GDB command... %s" % command
+				print colors.bold + colors.green
+				gdb.execute(command)
+				print colors.nc
+			else:
+				# Get the number of bytes
+				print colors.bold
+				num_bytes = raw_input("* How many bytes do you want to display? ")
+				print colors.nc
+				if int(num_bytes) == 0:
+					print "Number of bytes must be a number, not %s" % num_bytes
+					return
+				# Get the grouping
+				print colors.bold
+				print "Available Groupings (examples show in hexadcimal):"
+				print colors.nc
+				print "  b : 0xDE 0xAD 0xBE 0xEF 0xDE 0xAD 0xC0 0xDE"
+				print "  h : 0xDEAD 0xBEEF 0xDEAD 0xCODE"
+				print "  w : OxDEADBEEF 0xDEADCODE"
+				print "  g : 0xDEADBEEFDEADCODE"
+				print colors.bold
+				groups = raw_input("* What grouping do you want? ")
+				print colors.nc
+				#if (groups != 'b' && groups != 'h' && groups != 'w' && groups != 'g'):
+				#	print "Invalid group %s\n" % groups
+				#	return
+				# Execute the examine GDB command
+				command = "x/" + num_bytes + groups + print_format + " " + address
+				print "Executing GDB command... %s" % command
+				print colors.bold + colors.green
+				gdb.execute(command)
+				print colors.nc
+
+
+
+# Tutorial
+
+
+
+# Make commands available!
+print colors.bold
+print "Loading S-GDB..."
+print colors.nc
 LoopsCommand()
 RecursionCommand()
+CodeCommand()
+MemoryCommand()
