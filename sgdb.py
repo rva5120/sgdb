@@ -42,7 +42,7 @@
 #	(2) invoke : defines the behavior of the command											#
 #																																				#
 # Useful resources:																											#
-# 	Reversing: Secrets of Reverse Engineering (Wiley)										#
+#		Reversing: Secrets of Reverse Engineering (Wiley)										#
 #	GDB Python API: https://sourceware.org/gdb/onlinedocs/gdb/						#
 #				Python-API.html#Python-API																			#
 #	Tutorial: http://tromey.com/blog/?p=501																#
@@ -52,7 +52,7 @@
 # Imports
 from __future__ import with_statement
 from collections import OrderedDict
-import gdb 	# module defined by GDB, cannot be used outside of gdb
+import gdb	# module defined by GDB, cannot be used outside of gdb
 import re
 
 
@@ -67,7 +67,7 @@ class SaveBreakpointsCommand(gdb.Command):
 	# completion on the cmd line will work properly with files
 	#
 	# __init__(name, command_class [, completer_class [,prefix]])
-	# 	 name: 
+	#		 name: 
 	def __init__(self):
 		super (SaveBreakpointsCommand, self).__init__("command name", 
 							gdb.COMMAND_SUPPORT, 
@@ -138,7 +138,7 @@ class LoopsCommand(gdb.Command):
 			# Regex:
 			#	Address of Instruction: 0x[0-9a-f]{3,}   ---> "0x"+ 3 or more hex numbers
 			#	Instruction offset: <\+[0-9]+>
-			# 	Instruction: [a-z]{3,}
+			#		Instruction: [a-z]{3,}
 			#	Jumping address: (same as address of instruction, but second match of the regex)
 			addresses = re.findall(r"0x[0-9a-f]+", i)
 			if len(addresses) > 0:
