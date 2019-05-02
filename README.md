@@ -47,7 +47,7 @@ any othe the commands below.
 
 ## Troubleshooting
 Tutorial Errors:
-  - If needed, notes.c might need to be recompiled: gcc notes.c -o notes -ggdb
+  - If needed, notes.c might need to be recompiled: `gcc notes.c -o notes -ggdb`
 
 
 ## Enhancing S-GDB
