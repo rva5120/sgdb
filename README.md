@@ -1,5 +1,6 @@
 # S-GDB: GDB extension geared to beginners
 Welcome to S-GDB! S-GDB is designed to help students and beginners get more familiar with GDB.
+Please take this survey: https://forms.gle/3WeVHpCXf6J3fyfSA!
 
 ## Installation
 **Clone the S-GDB repo**
