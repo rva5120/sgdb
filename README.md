@@ -1,4 +1,5 @@
-# S-GDB: A usability-enhancing GDB interface geared to beginners
+# S-GDB: GDB extension geared to beginners
+Welcome to S-GDB! S-GDB is designed to help students and beginners get more familiar with GDB.
 
 ## Installation
 **Clone the S-GDB repo**
@@ -9,11 +10,15 @@ git clone github.com/rva5120/sgdb
 **Change .gdbinit to always source the sgdb.py script**
 ```
 vim ~/.gdbinit
-[add line ->] source <path>/<to>/sgdb/sgdb.py
+[add this line to the .gdbinit ->] source <path>/<to>/sgdb/sgdb.py
 ```
 
 
 ## Running S-GDB
+S-GDB features 5 commands, including a tutorial. After installing S-GDB, you can start running GDB.
+If you changed .gdbinit and added the line (as mentioned on the installation), you can start using
+any othe the commands below.
+
 **Tutorial**
 ```
 (gdb) tutorial
@@ -21,17 +26,17 @@ vim ~/.gdbinit
 
 **x86 Instruction Information**
 ```
-(gdb) instruction push
+(gdb) instruction <instruction name>
 ```
 
 **Loops Highlighting**
 ```
-(gdb) show loops main
+(gdb) show loops <function name>
 ```
 
 **Recursion Highlighting**
 ```
-(gdb) show recursion main
+(gdb) show recursion <function name>
 ```
 
 **Examining Memory**
