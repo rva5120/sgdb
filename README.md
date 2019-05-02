@@ -16,7 +16,7 @@ vim ~/.gdbinit
 
 ## Running S-GDB
 S-GDB features 5 commands, including a tutorial. After installing S-GDB, you can start running GDB.
-If you changed .gdbinit and added the line (as mentioned on the installation), you can start using
+If you changed .gdbinit appropriately (as recommended on the installation), you can start using
 any othe the commands below.
 
 **Tutorial**
