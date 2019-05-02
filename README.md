@@ -1,6 +1,6 @@
-## S-GDB: A usability-enhancing GDB interface geared to beginners
+# S-GDB: A usability-enhancing GDB interface geared to beginners
 
-### Installation
+## Installation
 **Clone the S-GDB repo**
 ```
 git clone github.com/rva5120/sgdb
@@ -13,7 +13,7 @@ vim ~/.gdbinit
 ```
 
 
-### Running S-GDB
+## Running S-GDB
 **Tutorial**
 ```
 (gdb) tutorial
@@ -40,10 +40,10 @@ vim ~/.gdbinit
 ````
 
 
-### Troubleshooting
+## Troubleshooting
 Tutorial Errors:
   - If needed, notes.c might need to be recompiled: gcc notes.c -o notes -ggdb
 
 
-### Enhancing S-GDB
+## Enhancing S-GDB
 To add more commands, please refer to sgdb.py.
