@@ -5,6 +5,9 @@ Welcome to S-GDB! S-GDB is designed to help students and beginners get more fami
 Please take this survey: https://forms.gle/3WeVHpCXf6J3fyfSA!
 
 ## Installation
+This installation procedure assumes you already have GDB installed and available via the `gdb` command on your terminal/cli.
+Once GDB is installed, open a new terminal window and follow these instructions:
+
 **Clone the S-GDB repo**
 ```
 git clone github.com/rva5120/sgdb
